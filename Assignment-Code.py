@@ -15,6 +15,8 @@ import pandas as pd
 from io import StringIO
 import csv
 import os
+import glob
+import numpy as np
 
 #%%
 
@@ -45,7 +47,13 @@ gsutil -m -o "Boto:parallel_thread_count=25" cp -r gs://de-assignment-data-bucke
 #get list of all the filenames in data
 entries = os.listdir('data')
 
-
+def getname(filename):
+    parsed = filename.split("_")
+    
+    #information in yyyy-MM-dd HH:mm:ss format
+    name = parsed[0]+"_"+parsed[0]
+    
+    return name;
 
 def getdate(filename):
     parsed = filename.split("_")
@@ -54,6 +62,13 @@ def getdate(filename):
     date = parsed[-2]+parsed[-1][:6]
     
     return date;
+
+#%%
+file_name = getname(entries[0])
+
+#%%
+
+
     
 #print(getdate(entries[0]))
 
@@ -109,8 +124,81 @@ def label_size (row):
 # create magnitude column
 data['magnitude'] = data.apply (lambda row: label_size(row), axis=1)
 
-#create column magnitude
+#Function tranformation
+def transform (data_f, date_f):
+    #create a timestamp
+    data_f['timestamp'] = pd.to_datetime(file_date)
+    #new id column
+    id_parsed = data_f['id'].str.split('-',  expand = True)
+
+
+    data_f['id'] = id_parsed[len(id_parsed.columns)//2]
+
+    # rename Pandas columns to lower case
+    data_f.columns= data_f.columns.str.lower()
+
+    #substitutes the old column named 'size' and filters the lines without integer
+    data_f['size'] = pd.to_numeric(data_f['size'], errors='coerce', downcast=('integer'))
+    data_f = data_f[data_f['size'].notnull()]
+    
+    # create magnitude column
+    data_f['magnitude'] = data_f.apply (lambda row: label_size(row), axis=1)
+    
+    return data_f;
+    
+
+#%%
+
+tablenames = ['lander_saturn', 'lander_venus', 'rocket_saturn', 'rocket_venus']
+#tablenames = ['lander_saturn']
+
+path = "/Users/miguelcunha/Documents/GitHub/Lunar-Assignment/data"
+
+for name in tablenames:
+    all_files = glob.glob(os.path.join(path, name+"*.csv"))
+    
+    all_df = []
+    for f in all_files:
+        
+        df_from_each_file = pd.read_csv(f)
+        file_date = getdate(f)
+        df_from_each_file = transform(df_from_each_file,file_date)  
+        all_df.append(df_from_each_file)
+        
+    df_merged   = pd.concat(all_df, ignore_index=True)
+    
+    df_merged.to_csv( name+".csv")
+
+
+
+#%%
+
+
+#create 4 data frames
+data_keys = {}
+
+def getuniquename(files):
+    
+    new = []
+    for file in files:
+        new.append(file[:9])
+        
+    return np.unique(np.array(new));
+        
+#print(getuniquename(entries))
+    
+test =  entries[:][:9]
+new_test = test[:][:9]
+#data_keys[]
+for file in entries:
+    ;
+    
+
+#%%
+
 def main ():
+    
+    
     
     return;
 
