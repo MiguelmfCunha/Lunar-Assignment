@@ -68,7 +68,7 @@ file_name = getname(entries[0])
 
 #%%
 
-
+'''
     
 #print(getdate(entries[0]))
 
@@ -98,7 +98,12 @@ data.columns= data.columns.str.lower()
 data['size'] = pd.to_numeric(data['size'], errors='coerce', downcast=('integer'))
 data = data[data['size'].notnull()]
 
+# create magnitude column
+#data['magnitude'] = data.apply (lambda row: label_size(row), axis=1)
 
+
+
+'''
 
 
 def label_size (row):
@@ -121,10 +126,9 @@ def label_size (row):
     else:
         return 'Error';
 
-# create magnitude column
-data['magnitude'] = data.apply (lambda row: label_size(row), axis=1)
 
-#Function tranformation
+
+#Function tranformation which applies multiple data transformations
 def transform (data_f, date_f):
     #create a timestamp
     data_f['timestamp'] = pd.to_datetime(file_date)
@@ -154,6 +158,8 @@ tablenames = ['lander_saturn', 'lander_venus', 'rocket_saturn', 'rocket_venus']
 
 path = "/Users/miguelcunha/Documents/GitHub/Lunar-Assignment/data"
 
+
+#final function to be created
 for name in tablenames:
     all_files = glob.glob(os.path.join(path, name+"*.csv"))
     
@@ -173,7 +179,7 @@ for name in tablenames:
 
 #%%
 
-
+'''
 #create 4 data frames
 data_keys = {}
 
@@ -208,4 +214,4 @@ def main ():
 
 
 #%%
-
+'''
