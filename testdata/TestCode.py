@@ -17,7 +17,8 @@ import numpy as np
 
 
 os.chdir('/Users/miguelcunha/Documents/GitHub/Lunar-Assignment/testdata')
-#%%
+
+
 class TestGetDate(unittest.TestCase):
     def test1(self):
         self.assertEqual(ac.getdate('lander_saturn_20210301_023005.csv'), '20210301023005')
@@ -25,7 +26,6 @@ class TestGetDate(unittest.TestCase):
 unittest.main()
 
 
-#%%
 
 if __name__ == "__main__":
     
@@ -57,4 +57,10 @@ if __name__ == "__main__":
         else:
             data_merged = pd.concat(all_data, ignore_index=True)
             #saves to new csv file with file name
-            data_merged.to_csv(name + ".csv") 
+            data_merged.to_csv(name + ".csv") ;
+            
+            
+            
+            
+            
+        
