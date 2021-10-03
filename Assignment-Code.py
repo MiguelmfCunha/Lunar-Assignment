@@ -55,52 +55,68 @@ def getdate(filename):
     
     return date;
     
-print(getdate(entries[0]))
+#print(getdate(entries[0]))
 
 # SHALL I USE PANDAS OR ARRAYS
 
 #for file in entries:
 
+#get file date from name
 file_date = getdate(entries[0])
-    
+
+#csv to dataframe    
 data = pd.read_csv('data/'+entries[0])
+
+#create a timestamp
 data['timestamp'] = pd.to_datetime(file_date)
 
-data['id_new'] = data['id'].str.split('-',  expand = True)[2]
+#new id column
+id_parsed = data['id'].str.split('-',  expand = True)
+
+
+data['id'] = id_parsed[len(id_parsed.columns)//2]
 
 # rename Pandas columns to lower case
 data.columns= data.columns.str.lower()
+
+#substitutes the old column named 'size' and filters the lines without integer
+data['size'] = pd.to_numeric(data['size'], errors='coerce', downcast=('integer'))
+data = data[data['size'].notnull()]
+
+
+
+
+def label_size (row):
     
+    #print(row['size'])
+    #print(type(row['size']))
+    
+    if row['size'] <= 10 and row['size'] >= 1:
+        return 'tiny'
+    
+    if row['size'] < 50:
+        return 'small'
+    
+    if row['size'] < 100:
+        return 'medium'
+    if row['size'] < 500:
+        return 'big'
+    if row['size'] < 1000:
+        return 'massive'
+    else:
+        return 'Error';
+
+# create magnitude column
+data['magnitude'] = data.apply (lambda row: label_size(row), axis=1)
+
+#create column magnitude
+def main ():
+    
+    return;
 
 
 #%%
-#creates a client with anonymous credentials
-client = storage.Client.create_anonymous_client()
 
-#connects to the bucket
-bucket = client.bucket('de-assignment-data-bucket')
-
-#retrieves the list of all the files in the bucket
-blob = bucket.blob('data/rocket_venus_20210331_021752.csv')
-blob = blob.download_as_string()
-blob = blob.decode('utf-8')
-
-blob = StringIO(blob)  #tranform bytes to string here
-names = pd.read_csv(blob)  #then use pandas library to read the content into a dataframe
-
-    
-    
-#blob = storage.Blob("lander_saturn_20210301_013306.csv", bucket)
-'''
-csv_list = ["lander_saturn_20210301_013306.csv", "lander_venus_20210301_003124.csv", 
-            "rocket_saturn_20210301_121033.csv", "rocket_venus_20210308_035720.csv" ]
-'''
-
-
-
-#blob = bucket.get_blob('data/lander_saturn_20210301_013306.csv')
-
-#a = blob.download_as_string("lander_saturn_20210301_013306.csv")
 
 
 #%%
