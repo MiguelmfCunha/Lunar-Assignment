@@ -89,4 +89,12 @@ The result is expected to be two .csv files, 'rocket_venus.csv' and 'lander_satu
 | ll06 | 49 | 12.40.. | 33.39.. | 2000-10-10 10:10:12 | medium   |
 
 
+## Conclusion
+
+During this assignment I was able to explore and learn about some methodologies and processes which were new for me, regarding the tasks of a data engineer. The structured way of working implied in the task's organization (Fetch Data - Transform - Test) determined a very structured way of working, which helped me a lot. The tasks required a lot of reading and searching, particularly for the first and last part of the assignmemnt. A lot of this commands and processes were new to me so it required more time. Besides that, using GitHub was something relatively new, as I have only tried it a few times. However, I consider that challenging and it was an imense pleasure to do this assignment. I believe the results were achieved as expected and the only part where I would have spent more time would be in the testing part. Finally, thank you for the chance of having this interesting challenge.
+
+Best regards,
+
+
+Miguel Cunha
 
