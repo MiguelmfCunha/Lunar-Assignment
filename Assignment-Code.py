@@ -64,7 +64,7 @@ def label_size (row):
         return 'medium'
     if row['size'] < 500:
         return 'big'
-    if row['size'] < 1000:
+    if row['size'] <= 1000:
         return 'massive'
     else:
         return 'The size is either less then 1 or bigger then 1000.';
@@ -117,10 +117,11 @@ if __name__ == "__main__":
     tablenames = ['lander_saturn', 'lander_venus', 'rocket_saturn', 'rocket_venus']
     path = "/Users/miguelcunha/Documents/GitHub/Lunar-Assignment/data"
 
+    
     for name in tablenames:
         #gets all the files starting with tablenames
         all_files = glob.glob(os.path.join(path, name + "*.csv"))
-
+    
         # list with iterable panda objects
         all_data = []
         for f in all_files:
@@ -132,12 +133,14 @@ if __name__ == "__main__":
             #print(type(data_f))
             #print(type(file_date))
             data_f = transform(data_f,file_date)
-            
             all_data.append(data_f)
         
+            
         #receives an iterable of pandas files and concatenates them all together
         data_merged = pd.concat(all_data, ignore_index=True)
         #saves to new csv file with file name
         data_merged.to_csv(name + ".csv")    
 
+
+#%%
 
